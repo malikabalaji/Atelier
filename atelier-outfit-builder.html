@@ -1,0 +1,926 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Atelier — yours, restyled</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,300..500&family=Inter:wght@300..700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#F5F2EC;
+    --surface:#FFFFFF;
+    --ink:#1C1A17;
+    --muted:#79756E;
+    --line:rgba(28,26,23,.10);
+    --line-strong:rgba(28,26,23,.18);
+    --accent:#8B7355;
+    --accent-soft:#E8DFD2;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:'Inter',sans-serif;
+    color:var(--ink);
+    background:var(--bg);
+    -webkit-font-smoothing:antialiased;
+    font-size:15px;line-height:1.5;
+    font-weight:400;
+  }
+  ::selection{background:var(--accent-soft);color:var(--ink)}
+
+  .wrap{max-width:1080px;margin:0 auto;padding:0 32px}
+
+  /* ---------- header ---------- */
+  header{
+    position:sticky;top:0;z-index:50;
+    background:rgba(245,242,236,.85);
+    backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--line);
+  }
+  .bar{
+    max-width:1080px;margin:0 auto;
+    display:flex;align-items:center;justify-content:space-between;
+    padding:18px 32px;
+  }
+  .logo{
+    font-family:'Fraunces';font-weight:500;font-size:20px;letter-spacing:-.01em;
+    display:flex;align-items:center;gap:10px;
+  }
+  .logo::before{
+    content:'';width:8px;height:8px;border-radius:50%;
+    background:var(--accent);display:inline-block;
+  }
+  .nav{display:flex;gap:4px}
+  .nav button{
+    font-family:'Inter';font-weight:500;font-size:13.5px;
+    background:none;border:1px solid transparent;
+    padding:8px 16px;cursor:pointer;color:var(--muted);
+    border-radius:40px;transition:.2s;letter-spacing:-.005em;
+  }
+  .nav button:hover{color:var(--ink)}
+  .nav button.on{color:var(--ink);background:var(--surface);border-color:var(--line-strong)}
+
+  /* ---------- hero ---------- */
+  .hero{padding:140px 0 120px;text-align:center}
+  .hero .eyebrow{
+    font-size:12px;letter-spacing:.16em;text-transform:uppercase;
+    color:var(--muted);font-weight:500;margin-bottom:32px;
+  }
+  .hero h1{
+    font-family:'Fraunces';font-weight:400;
+    font-size:clamp(56px,9vw,108px);
+    line-height:1;letter-spacing:-.035em;
+    margin-bottom:28px;
+  }
+  .hero h1 em{font-style:italic;font-weight:300;color:var(--accent)}
+  .hero p{
+    font-size:17px;line-height:1.55;
+    color:var(--muted);max-width:480px;margin:0 auto;
+    font-weight:400;
+  }
+
+  /* divider rules */
+  .rule{border:none;border-top:1px solid var(--line);margin:0}
+
+  /* ---------- section ---------- */
+  section.sec{padding:96px 0}
+  .sec-head{margin-bottom:48px;max-width:640px}
+  .sec-head .num{
+    font-size:11px;letter-spacing:.18em;text-transform:uppercase;
+    color:var(--muted);font-weight:500;margin-bottom:14px;
+    display:flex;align-items:center;gap:10px;
+  }
+  .sec-head .num::after{content:'';flex:1;height:1px;background:var(--line);max-width:60px}
+  .sec-head h2{
+    font-family:'Fraunces';font-weight:400;
+    font-size:clamp(36px,5vw,52px);
+    line-height:1.05;letter-spacing:-.025em;margin-bottom:14px;
+  }
+  .sec-head h2 em{font-style:italic;font-weight:300;color:var(--muted)}
+  .sec-head p{color:var(--muted);font-size:15px;line-height:1.55;max-width:480px}
+
+  /* ---------- dropzone ---------- */
+  .drop{
+    background:var(--surface);
+    border:1px dashed var(--line-strong);
+    border-radius:16px;
+    padding:64px 32px;text-align:center;cursor:pointer;
+    transition:.25s ease;position:relative;
+  }
+  .drop:hover{border-color:var(--accent);background:#FAF8F4}
+  .drop.hot{border-color:var(--accent);background:var(--accent-soft)}
+  .drop .ic{
+    width:48px;height:48px;border-radius:50%;
+    background:var(--bg);color:var(--ink);
+    display:inline-flex;align-items:center;justify-content:center;
+    font-size:22px;font-weight:300;margin-bottom:20px;
+    transition:.25s;border:1px solid var(--line-strong);
+  }
+  .drop:hover .ic{background:var(--accent);color:var(--surface);border-color:var(--accent)}
+  .drop h3{
+    font-family:'Fraunces';font-size:24px;font-weight:400;
+    margin-bottom:6px;letter-spacing:-.015em;
+  }
+  .drop p{color:var(--muted);font-size:14px;margin-bottom:24px}
+  .drop .pick{
+    display:inline-block;
+    background:var(--ink);color:var(--surface);
+    font-size:13px;font-weight:500;letter-spacing:.01em;
+    padding:11px 22px;border-radius:40px;
+    transition:.2s;
+  }
+  .drop:hover .pick{background:var(--accent)}
+  .pick-row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;align-items:center}
+  .pick-ghost{
+    background:var(--surface);color:var(--ink);
+    border:1px solid var(--line-strong);
+    display:inline-flex;align-items:center;gap:8px;
+    font-family:'Inter';font-weight:500;
+  }
+  .drop:hover .pick-ghost{background:var(--surface);color:var(--ink)}
+  .pick-ghost:hover{background:var(--bg);border-color:var(--ink)}
+  .drop:hover .pick-ghost:hover{background:var(--bg)}
+  .cam-dot{
+    width:8px;height:8px;border-radius:50%;background:#D14848;
+    display:inline-block;animation:cam-pulse 1.6s ease-in-out infinite;
+  }
+  @keyframes cam-pulse{0%,100%{opacity:1}50%{opacity:.35}}
+
+  /* ---------- camera modal ---------- */
+  .cam-card{
+    background:#0F0E0C;border-radius:18px;
+    max-width:520px;width:100%;overflow:hidden;
+    animation:rise .3s ease both;
+    box-shadow:0 30px 80px -20px rgba(28,26,23,.5);
+    position:relative;
+  }
+  .cam-close{
+    position:absolute;top:12px;right:12px;z-index:5;
+    width:36px;height:36px;border-radius:50%;
+    background:rgba(255,255,255,.14);color:#fff;
+    border:none;cursor:pointer;font-size:20px;font-weight:300;
+    display:flex;align-items:center;justify-content:center;
+    transition:.2s;line-height:1;
+  }
+  .cam-close:hover{background:rgba(255,255,255,.24)}
+  .cam-stage{
+    aspect-ratio:1;background:#000;position:relative;overflow:hidden;
+  }
+  .cam-stage video{
+    width:100%;height:100%;object-fit:cover;display:block;
+  }
+  .cam-error{
+    position:absolute;inset:0;display:none;flex-direction:column;
+    align-items:center;justify-content:center;padding:32px;text-align:center;
+    color:#fff;font-size:14px;line-height:1.55;
+  }
+  .cam-error.show{display:flex}
+  .cam-error b{
+    font-family:'Fraunces';font-size:22px;font-weight:500;
+    display:block;margin-bottom:10px;letter-spacing:-.01em;
+  }
+  .cam-error span{color:rgba(255,255,255,.65);max-width:340px}
+  .cam-controls{
+    padding:22px;display:flex;justify-content:center;
+    background:#0F0E0C;
+  }
+  .cam-shutter{
+    width:64px;height:64px;border-radius:50%;
+    background:#fff;border:4px solid #0F0E0C;
+    cursor:pointer;transition:.15s;
+    box-shadow:0 0 0 3px #fff;
+  }
+  .cam-shutter:hover:not(:disabled){transform:scale(1.06)}
+  .cam-shutter:active:not(:disabled){transform:scale(.92)}
+  .cam-shutter:disabled{opacity:.4;cursor:not-allowed}
+  .cam-flash{
+    position:absolute;inset:0;background:#fff;opacity:0;
+    pointer-events:none;transition:opacity .15s;
+  }
+  .cam-flash.on{opacity:.85}
+
+  /* ---------- closet ---------- */
+  .closet-head{
+    display:flex;align-items:baseline;justify-content:space-between;
+    margin:80px 0 28px;padding-bottom:18px;border-bottom:1px solid var(--line);
+  }
+  .closet-head h3{
+    font-family:'Fraunces';font-size:22px;font-weight:500;letter-spacing:-.015em;
+  }
+  .count{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:500}
+
+  .closet{
+    display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));
+    gap:24px;
+  }
+  .item{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:14px;overflow:hidden;
+    cursor:pointer;position:relative;
+    transition:.25s ease;
+    animation:fade-up .4s ease both;
+  }
+  @keyframes fade-up{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+  .item:hover{transform:translateY(-3px);border-color:var(--line-strong);box-shadow:0 14px 40px -20px rgba(28,26,23,.18)}
+  .item .ph{aspect-ratio:1;background:var(--bg);overflow:hidden}
+  .item .ph img{width:100%;height:100%;object-fit:cover;transition:.5s ease}
+  .item:hover .ph img{transform:scale(1.04)}
+  .item .meta{padding:14px 16px;border-top:1px solid var(--line)}
+  .item .cat{
+    font-size:13px;font-weight:500;letter-spacing:-.005em;
+    display:flex;justify-content:space-between;align-items:center;
+  }
+  .item .cat .form-tag{font-size:11px;color:var(--muted);font-weight:400;letter-spacing:.04em;text-transform:uppercase}
+  .item .sw{display:flex;gap:5px;margin-top:10px}
+  .item .sw i{
+    width:14px;height:14px;border-radius:50%;
+    border:1px solid var(--line-strong);display:block;
+  }
+  .item .del{
+    position:absolute;top:10px;right:10px;
+    width:28px;height:28px;border-radius:50%;
+    background:var(--surface);color:var(--ink);
+    border:1px solid var(--line-strong);cursor:pointer;
+    font-size:12px;opacity:0;transition:.2s;z-index:3;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .item:hover .del{opacity:1}
+  .item .del:hover{background:var(--ink);color:var(--surface);border-color:var(--ink)}
+  .item .badge{
+    position:absolute;top:10px;left:10px;
+    background:var(--surface);color:var(--ink);
+    font-size:10px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;
+    padding:4px 9px;border-radius:20px;
+    border:1px solid var(--line-strong);
+  }
+
+  .empty{
+    text-align:center;padding:80px 30px;
+    color:var(--muted);
+  }
+  .empty .big{
+    font-family:'Fraunces';font-size:28px;font-weight:400;
+    color:var(--ink);margin-bottom:8px;letter-spacing:-.02em;
+    font-style:italic;
+  }
+  .empty p{font-size:14px;color:var(--muted)}
+
+  /* ---------- modal ---------- */
+  .scrim{
+    position:fixed;inset:0;
+    background:rgba(28,26,23,.4);
+    backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+    z-index:200;display:none;align-items:center;justify-content:center;padding:24px;
+  }
+  .scrim.show{display:flex;animation:fade .25s ease both}
+  @keyframes fade{from{opacity:0}to{opacity:1}}
+  .card{
+    background:var(--surface);
+    border:1px solid var(--line-strong);
+    border-radius:18px;max-width:440px;width:100%;
+    overflow:hidden;animation:rise .3s ease both;
+    box-shadow:0 30px 80px -20px rgba(28,26,23,.3);
+  }
+  @keyframes rise{from{transform:translateY(16px);opacity:0}to{transform:none;opacity:1}}
+  .card .top{display:flex;gap:16px;padding:24px;border-bottom:1px solid var(--line)}
+  .card .thumb{
+    width:80px;height:80px;border-radius:10px;
+    border:1px solid var(--line);
+    object-fit:cover;flex-shrink:0;
+  }
+  .card .top h3{
+    font-family:'Fraunces';font-size:22px;font-weight:500;
+    line-height:1.1;letter-spacing:-.015em;
+  }
+  .card .guess{font-size:13px;color:var(--muted);margin-top:8px;line-height:1.45}
+  .card .guess b{color:var(--ink);font-weight:500}
+  .card .body{padding:24px}
+  .card .lab{
+    font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--muted);margin-bottom:12px;display:block;font-weight:500;
+  }
+  .chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:20px}
+  .chip{
+    border:1px solid var(--line-strong);
+    background:var(--surface);color:var(--ink);
+    padding:8px 14px;border-radius:40px;cursor:pointer;
+    font-family:'Inter';font-weight:500;font-size:13px;
+    transition:.18s;
+  }
+  .chip.on{background:var(--ink);color:var(--surface);border-color:var(--ink)}
+  .chip:not(.on):hover{border-color:var(--ink)}
+  .card .act{display:flex;gap:10px;padding:0 24px 24px}
+  .btn{
+    flex:1;font-family:'Inter';font-weight:500;font-size:13.5px;
+    padding:13px;border-radius:40px;cursor:pointer;
+    border:1px solid var(--ink);transition:.18s;letter-spacing:-.005em;
+  }
+  .btn.fill{background:var(--ink);color:var(--surface)}
+  .btn.fill:hover{background:var(--accent);border-color:var(--accent)}
+  .btn.ghost{background:var(--surface);color:var(--ink)}
+  .btn.ghost:hover{background:var(--bg)}
+
+  /* ---------- studio ---------- */
+  .anchor-lab{
+    font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--muted);margin-bottom:18px;display:block;font-weight:500;
+  }
+  .arow{
+    display:flex;gap:14px;overflow-x:auto;
+    padding:4px 4px 14px;margin-bottom:24px;
+    scrollbar-width:thin;scrollbar-color:var(--line-strong) transparent;
+  }
+  .arow::-webkit-scrollbar{height:4px}
+  .arow::-webkit-scrollbar-thumb{background:var(--line-strong);border-radius:10px}
+  .athumb{
+    flex-shrink:0;width:96px;cursor:pointer;
+    border:1px solid var(--line);
+    border-radius:12px;overflow:hidden;background:var(--surface);
+    transition:.2s;position:relative;
+  }
+  .athumb:hover{border-color:var(--line-strong);transform:translateY(-2px)}
+  .athumb img{width:100%;aspect-ratio:1;object-fit:cover;display:block}
+  .athumb.on{border-color:var(--ink);box-shadow:0 0 0 1px var(--ink)}
+  .athumb .t{
+    font-size:10px;font-weight:500;letter-spacing:.04em;text-transform:uppercase;
+    padding:6px;text-align:center;border-top:1px solid var(--line);color:var(--muted);
+  }
+  .athumb.on .t{color:var(--ink)}
+
+  .gen{display:flex;align-items:center;gap:18px;margin:8px 0 40px;flex-wrap:wrap}
+  .gen button{
+    font-family:'Inter';font-weight:500;font-size:14px;
+    background:var(--ink);color:var(--surface);
+    border:1px solid var(--ink);
+    padding:14px 28px;border-radius:50px;cursor:pointer;
+    transition:.2s;letter-spacing:-.005em;
+  }
+  .gen button:hover:not(:disabled){background:var(--accent);border-color:var(--accent)}
+  .gen button:disabled{background:var(--surface);color:var(--muted);border-color:var(--line-strong);cursor:not-allowed}
+  .gen .hint{font-size:13.5px;color:var(--muted)}
+
+  .looks{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:24px}
+  .look{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:16px;overflow:hidden;
+    animation:fade-up .45s ease both;
+    transition:.25s;
+  }
+  .look:hover{border-color:var(--line-strong);transform:translateY(-3px);box-shadow:0 14px 40px -20px rgba(28,26,23,.18)}
+  .look .lh{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:16px 18px;border-bottom:1px solid var(--line);
+  }
+  .look .lh .nm{font-family:'Fraunces';font-style:italic;font-size:19px;font-weight:400;letter-spacing:-.01em}
+  .look .lh .sc{
+    font-size:11px;letter-spacing:.1em;font-weight:500;
+    color:var(--muted);text-transform:uppercase;
+  }
+  .look .lh .sc b{color:var(--ink);font-weight:500}
+  .look .pieces{display:grid;grid-template-columns:repeat(2,1fr)}
+  .look .pc{
+    aspect-ratio:1;border-right:1px solid var(--line);border-bottom:1px solid var(--line);
+    position:relative;overflow:hidden;background:var(--bg);
+  }
+  .look .pc:nth-child(2n){border-right:none}
+  .look .pc:nth-child(3),.look .pc:nth-child(4){border-bottom:none}
+  .look .pc img{width:100%;height:100%;object-fit:cover}
+  .look .pc .role{
+    position:absolute;bottom:8px;left:8px;
+    background:var(--surface);color:var(--ink);
+    font-size:10px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;
+    padding:3px 8px;border-radius:20px;border:1px solid var(--line);
+  }
+  .look .why{
+    padding:16px 18px;font-size:13.5px;line-height:1.55;color:var(--muted);
+  }
+  .look .why b{color:var(--ink);font-weight:500}
+
+  footer{
+    border-top:1px solid var(--line);
+    padding:32px 0;text-align:center;
+    font-size:12px;letter-spacing:.12em;text-transform:uppercase;
+    color:var(--muted);margin-top:40px;
+  }
+
+  .hidden{display:none!important}
+  input[type=file]{display:none}
+
+  @media (max-width:640px){
+    .wrap{padding:0 20px}
+    .bar{padding:14px 20px}
+    .logo{font-size:18px}
+    .nav button{padding:7px 12px;font-size:12.5px}
+    .hero{padding:80px 0 70px}
+    .drop{padding:48px 24px}
+    section.sec{padding:64px 0}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="bar">
+    <div class="logo">Atelier</div>
+    <nav class="nav">
+      <button class="on" data-p="wardrobe">Closet</button>
+      <button data-p="studio">Studio</button>
+    </nav>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero wrap">
+  <div class="eyebrow">Wardrobe studio · 2026</div>
+  <h1>yours,<br><em>restyled.</em></h1>
+</section>
+
+<hr class="rule">
+
+<!-- WARDROBE -->
+<section class="sec" id="p-wardrobe">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="num">01 — Upload</div>
+      <h2>Build your <em>closet.</em></h2>
+      <p>One garment per photo works best. Plain backgrounds help, but aren't required.</p>
+    </div>
+
+    <div class="drop" id="drop">
+      <div class="ic">+</div>
+      <h3>Add a piece</h3>
+      <p>Drop a photo here, or:</p>
+      <div class="pick-row">
+        <span class="pick">Choose photos</span>
+        <button type="button" class="pick pick-ghost" id="camBtn"><span class="cam-dot"></span>Take photo</button>
+      </div>
+      <input type="file" id="file" accept="image/*" multiple>
+    </div>
+
+    <div class="closet-head">
+      <h3>The closet</h3>
+      <span class="count" id="count">0 pieces</span>
+    </div>
+    <div class="closet" id="closet"></div>
+    <div class="empty" id="empty">
+      <div class="big">An empty rail.</div>
+      <p>Add a few pieces above and they'll appear here.</p>
+    </div>
+  </div>
+</section>
+
+<hr class="rule">
+
+<!-- STUDIO -->
+<section class="sec" id="p-studio">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="num">02 — Style</div>
+      <h2>Pick one piece. <em>We finish the look.</em></h2>
+      <p>Choose an anchor below. The engine completes a full outfit from your closet — matching formality, balancing colour.</p>
+    </div>
+
+    <div id="studio-empty" class="empty">
+      <div class="big">Nothing to style yet.</div>
+      <p>Head up to your closet and add a few pieces first.</p>
+    </div>
+
+    <div id="studio-body" class="hidden">
+      <span class="anchor-lab">Choose your anchor</span>
+      <div class="arow" id="anchors"></div>
+      <div class="gen">
+        <button id="genbtn" disabled>Build outfits</button>
+        <span class="hint" id="genhint">Select an anchor to begin.</span>
+      </div>
+      <div class="looks" id="looks"></div>
+    </div>
+  </div>
+</section>
+
+<!-- CAMERA MODAL -->
+<div class="scrim" id="cam-scrim">
+  <div class="cam-card">
+    <button class="cam-close" id="cam-close" aria-label="Close camera">×</button>
+    <div class="cam-stage">
+      <video id="cam-video" autoplay playsinline muted></video>
+      <div class="cam-flash" id="cam-flash"></div>
+      <div class="cam-error" id="cam-error">
+        <b>Camera unavailable</b>
+        <span id="cam-error-msg"></span>
+      </div>
+    </div>
+    <div class="cam-controls">
+      <button class="cam-shutter" id="cam-shutter" aria-label="Take photo"></button>
+    </div>
+  </div>
+</div>
+
+<!-- TAG CONFIRM MODAL -->
+<div class="scrim" id="scrim">
+  <div class="card">
+    <div class="top">
+      <img class="thumb" id="m-thumb" alt="">
+      <div>
+        <h3>What is this?</h3>
+        <p class="guess" id="m-guess">We detected <b>colour</b>. Confirm the category.</p>
+      </div>
+    </div>
+    <div class="body">
+      <span class="lab">Category</span>
+      <div class="chips" id="m-cats"></div>
+      <span class="lab">Formality</span>
+      <div class="chips" id="m-form"></div>
+    </div>
+    <div class="act">
+      <button class="btn ghost" id="m-skip">Skip</button>
+      <button class="btn fill" id="m-save">Add to closet</button>
+    </div>
+  </div>
+</div>
+
+<footer>Atelier · stored on this device · prototype</footer>
+
+<script>
+/* ============================================================
+   STATE
+   ============================================================ */
+const CATS = ['Top','Bottom','Dress','Outerwear','Shoes','Accessory'];
+const FORMS = ['Casual','Smart','Formal'];
+let WARDROBE = load();
+let pending = null;
+let selCat = null, selForm = null;
+let anchorId = null;
+
+function load(){ try{return JSON.parse(localStorage.getItem('atelier_wd'))||[]}catch{return[]} }
+function save(){ localStorage.setItem('atelier_wd', JSON.stringify(WARDROBE)) }
+const uid = ()=> Math.random().toString(36).slice(2,9);
+
+/* ============================================================
+   COLOUR DETECTION
+   ============================================================ */
+function analyzeImage(imgEl){
+  const c = document.createElement('canvas');
+  const S = 48; c.width=S; c.height=S;
+  const ctx = c.getContext('2d');
+  ctx.drawImage(imgEl,0,0,S,S);
+  const d = ctx.getImageData(0,0,S,S).data;
+  const buckets = {};
+  let warm=0, cool=0, dark=0, light=0, sat=0, n=0;
+  for(let i=0;i<d.length;i+=4){
+    const r=d[i],g=d[i+1],b=d[i+2],a=d[i+3];
+    if(a<128) continue;
+    n++;
+    const max=Math.max(r,g,b),min=Math.min(r,g,b);
+    const l=(max+min)/2, s=max===min?0:(max-min)/(255-Math.abs(max+min-255)+1);
+    sat+=s; if(l<70)dark++; if(l>190)light++;
+    if(r>b)warm++; else cool++;
+    const key = [Math.round(r/40),Math.round(g/40),Math.round(b/40)].join(',');
+    buckets[key]=buckets[key]||{c:0,r:0,g:0,b:0};
+    buckets[key].c++; buckets[key].r+=r; buckets[key].g+=g; buckets[key].b+=b;
+  }
+  const top = Object.values(buckets).sort((a,b)=>b.c-a.c).slice(0,3)
+    .map(o=>`rgb(${Math.round(o.r/o.c)},${Math.round(o.g/o.c)},${Math.round(o.b/o.c)})`);
+  const avgSat = sat/n;
+  return {
+    colors: top,
+    neutral: avgSat < 0.18,
+    tone: dark>light ? 'dark' : 'light',
+    statement: avgSat > 0.42,
+  };
+}
+
+function guessCategory(imgEl){
+  const ar = imgEl.naturalWidth / imgEl.naturalHeight;
+  if(ar > 1.25) return 'Shoes';
+  if(ar < 0.72) return 'Dress';
+  return 'Top';
+}
+
+/* ============================================================
+   UPLOAD
+   ============================================================ */
+const drop = document.getElementById('drop');
+const fileIn = document.getElementById('file');
+drop.addEventListener('click', ()=>fileIn.click());
+fileIn.addEventListener('change', e=>handleFiles(e.target.files));
+['dragover','dragenter'].forEach(ev=>drop.addEventListener(ev,e=>{e.preventDefault();drop.classList.add('hot')}));
+['dragleave','drop'].forEach(ev=>drop.addEventListener(ev,e=>{e.preventDefault();drop.classList.remove('hot')}));
+drop.addEventListener('drop', e=>handleFiles(e.dataTransfer.files));
+
+/* ============================================================
+   CAMERA CAPTURE
+   ============================================================ */
+const camScrim = document.getElementById('cam-scrim');
+const camVideo = document.getElementById('cam-video');
+const camShutter = document.getElementById('cam-shutter');
+const camError = document.getElementById('cam-error');
+const camErrorMsg = document.getElementById('cam-error-msg');
+const camCloseBtn = document.getElementById('cam-close');
+const camFlash = document.getElementById('cam-flash');
+let camStream = null;
+
+document.getElementById('camBtn').addEventListener('click', e=>{
+  e.stopPropagation();
+  openCamera();
+});
+
+async function openCamera(){
+  camScrim.classList.add('show');
+  camError.classList.remove('show');
+  camVideo.style.display = 'block';
+  camShutter.disabled = false;
+  if(!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia){
+    showCamError("Your browser doesn't support webcam access. Try \"Choose photos\" instead.");
+    return;
+  }
+  try{
+    camStream = await navigator.mediaDevices.getUserMedia({
+      video:{ facingMode:{ ideal:'environment' }, width:{ ideal:1280 }, height:{ ideal:1280 } },
+      audio:false
+    });
+    camVideo.srcObject = camStream;
+  }catch(err){
+    if(err.name === 'NotAllowedError') showCamError("Camera permission was denied. Allow access in your browser settings, or use \"Choose photos\".");
+    else if(err.name === 'NotFoundError') showCamError("No camera was found on this device.");
+    else showCamError("Couldn't start the camera. This page may need to be served over HTTPS or localhost.");
+  }
+}
+
+function showCamError(msg){
+  camVideo.style.display = 'none';
+  camShutter.disabled = true;
+  camErrorMsg.textContent = msg;
+  camError.classList.add('show');
+}
+
+function closeCamera(){
+  camScrim.classList.remove('show');
+  if(camStream){
+    camStream.getTracks().forEach(t=>t.stop());
+    camStream = null;
+  }
+  camVideo.srcObject = null;
+}
+
+camCloseBtn.addEventListener('click', closeCamera);
+camScrim.addEventListener('click', e=>{ if(e.target === camScrim) closeCamera(); });
+
+camShutter.addEventListener('click', ()=>{
+  if(!camStream) return;
+  const w = camVideo.videoWidth, h = camVideo.videoHeight;
+  if(!w || !h) return;
+  // crop to square (centered) for consistency with the grid
+  const size = Math.min(w, h);
+  const cx = (w - size) / 2, cy = (h - size) / 2;
+  const c = document.createElement('canvas');
+  c.width = size; c.height = size;
+  c.getContext('2d').drawImage(camVideo, cx, cy, size, size, 0, 0, size, size);
+  const dataURL = c.toDataURL('image/jpeg', 0.9);
+
+  // shutter flash
+  camFlash.classList.add('on');
+  setTimeout(()=>camFlash.classList.remove('on'), 140);
+
+  closeCamera();
+
+  // route through the same pipeline as file upload
+  const img = new Image();
+  img.onload = ()=>{
+    const info = analyzeImage(img);
+    openConfirm({
+      id: uid(), src: dataURL,
+      colors: info.colors, neutral: info.neutral,
+      tone: info.tone, statement: info.statement,
+      cat: guessCategory(img), form: 'Casual'
+    });
+  };
+  img.src = dataURL;
+});
+
+function handleFiles(files){
+  [...files].filter(f=>f.type.startsWith('image/')).forEach(f=>{
+    const reader = new FileReader();
+    reader.onload = ev=>{
+      const img = new Image();
+      img.onload = ()=>{
+        const info = analyzeImage(img);
+        openConfirm({
+          id: uid(), src: ev.target.result,
+          colors: info.colors, neutral: info.neutral,
+          tone: info.tone, statement: info.statement,
+          cat: guessCategory(img), form: 'Casual'
+        });
+      };
+      img.src = ev.target.result;
+    };
+    reader.readAsDataURL(f);
+  });
+}
+
+/* ============================================================
+   MODAL
+   ============================================================ */
+const scrim = document.getElementById('scrim');
+function openConfirm(item){
+  pending = item; selCat = item.cat; selForm = item.form;
+  document.getElementById('m-thumb').src = item.src;
+  const cb = document.getElementById('m-cats'); cb.innerHTML='';
+  CATS.forEach(c=>{
+    const b=document.createElement('button'); b.className='chip'+(c===selCat?' on':''); b.textContent=c;
+    b.onclick=()=>{selCat=c;[...cb.children].forEach(x=>x.classList.remove('on'));b.classList.add('on')};
+    cb.appendChild(b);
+  });
+  const fb = document.getElementById('m-form'); fb.innerHTML='';
+  FORMS.forEach(c=>{
+    const b=document.createElement('button'); b.className='chip'+(c===selForm?' on':''); b.textContent=c;
+    b.onclick=()=>{selForm=c;[...fb.children].forEach(x=>x.classList.remove('on'));b.classList.add('on')};
+    fb.appendChild(b);
+  });
+  const sw = item.colors.map(c=>`<span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:${c};border:1px solid var(--line-strong);vertical-align:-2px;margin:0 1px"></span>`).join('');
+  document.getElementById('m-guess').innerHTML =
+    `Detected palette ${sw}${item.statement?' · <b>statement piece</b>':item.neutral?' · <b>neutral</b>':''}.`;
+  scrim.classList.add('show');
+}
+document.getElementById('m-save').onclick = ()=>{
+  pending.cat = selCat; pending.form = selForm;
+  WARDROBE.push(pending); save(); pending=null;
+  scrim.classList.remove('show');
+  renderCloset(); renderStudio();
+};
+document.getElementById('m-skip').onclick = ()=>{ scrim.classList.remove('show'); pending=null; };
+scrim.addEventListener('click', e=>{ if(e.target===scrim){scrim.classList.remove('show');pending=null;} });
+
+/* ============================================================
+   CLOSET RENDER
+   ============================================================ */
+function renderCloset(){
+  const grid = document.getElementById('closet');
+  const empty = document.getElementById('empty');
+  document.getElementById('count').textContent = WARDROBE.length+' piece'+(WARDROBE.length===1?'':'s');
+  grid.innerHTML='';
+  empty.style.display = WARDROBE.length? 'none':'block';
+  WARDROBE.forEach((it,i)=>{
+    const el=document.createElement('div'); el.className='item'; el.style.animationDelay=(i*.03)+'s';
+    const sw = it.colors.map(c=>`<i style="background:${c}"></i>`).join('');
+    el.innerHTML=`
+      ${it.statement?'<span class="badge">Statement</span>':''}
+      <button class="del" data-id="${it.id}">×</button>
+      <div class="ph"><img src="${it.src}" alt="${it.cat}"></div>
+      <div class="meta">
+        <div class="cat"><span>${it.cat}</span><span class="form-tag">${it.form}</span></div>
+        <div class="sw">${sw}</div>
+      </div>`;
+    grid.appendChild(el);
+  });
+  grid.querySelectorAll('.del').forEach(b=>b.onclick=e=>{
+    e.stopPropagation();
+    WARDROBE = WARDROBE.filter(x=>x.id!==b.dataset.id); save();
+    renderCloset(); renderStudio();
+  });
+}
+
+/* ============================================================
+   STUDIO
+   ============================================================ */
+function renderStudio(){
+  const has = WARDROBE.length>0;
+  document.getElementById('studio-empty').classList.toggle('hidden',has);
+  document.getElementById('studio-body').classList.toggle('hidden',!has);
+  if(!has) return;
+  if(anchorId && !WARDROBE.find(x=>x.id===anchorId)) anchorId=null;
+  const row=document.getElementById('anchors'); row.innerHTML='';
+  WARDROBE.forEach(it=>{
+    const a=document.createElement('div'); a.className='athumb'+(it.id===anchorId?' on':'');
+    a.innerHTML=`<img src="${it.src}"><div class="t">${it.cat}</div>`;
+    a.onclick=()=>{anchorId=it.id;renderStudio()};
+    row.appendChild(a);
+  });
+  const btn=document.getElementById('genbtn');
+  btn.disabled = !anchorId;
+  document.getElementById('genhint').textContent = anchorId
+    ? 'Ready. Build complete outfits around your anchor.'
+    : 'Select an anchor to begin.';
+}
+document.getElementById('genbtn').onclick = ()=>buildOutfits();
+
+function neededRoles(anchor){
+  const c = anchor.cat;
+  if(c==='Dress') return ['Shoes','Outerwear','Accessory'];
+  if(c==='Outerwear') return ['Top','Bottom','Shoes','Accessory'];
+  if(c==='Shoes') return ['Top','Bottom','Outerwear','Accessory'];
+  if(c==='Accessory') return ['Top','Bottom','Shoes','Outerwear'];
+  if(c==='Top') return ['Bottom','Shoes','Outerwear','Accessory'];
+  if(c==='Bottom') return ['Top','Shoes','Outerwear','Accessory'];
+  return ['Top','Bottom','Shoes'];
+}
+const REQUIRED = { Dress:['Shoes'], Outerwear:['Top','Bottom','Shoes'], Shoes:['Top','Bottom'],
+  Accessory:['Top','Bottom','Shoes'], Top:['Bottom','Shoes'], Bottom:['Top','Shoes'] };
+
+const formDist = (a,b)=>Math.abs(FORMS.indexOf(a)-FORMS.indexOf(b));
+
+function scorePiece(cand, anchor, chosen){
+  let s = 50;
+  s -= formDist(cand.form, anchor.form)*14;
+  const statements = [anchor,...chosen,cand].filter(x=>x.statement).length;
+  if(statements>1) s -= 22*(statements-1);
+  if(cand.neutral) s += 12;
+  const darks = [anchor,...chosen,cand].filter(x=>x.tone==='dark').length;
+  const tot = chosen.length+2;
+  if(darks===0 || darks===tot) s += 6;
+  s += Math.random()*10;
+  return s;
+}
+
+function buildOne(anchor, used){
+  const chosen=[]; const roles=neededRoles(anchor);
+  for(const role of roles){
+    const pool = WARDROBE.filter(x=>x.cat===role && x.id!==anchor.id && !used.has(x.id));
+    if(!pool.length) continue;
+    pool.sort((a,b)=>scorePiece(b,anchor,chosen)-scorePiece(a,anchor,chosen));
+    const pick = pool[0];
+    chosen.push(pick); used.add(pick.id);
+  }
+  const req = REQUIRED[anchor.cat]||[];
+  const haveCats = chosen.map(x=>x.cat);
+  const complete = req.every(r=>haveCats.includes(r) || anchor.cat===r);
+  return {anchor, pieces:chosen, complete};
+}
+
+function rationale(o){
+  const all=[o.anchor,...o.pieces];
+  const statement = all.find(x=>x.statement);
+  const forms=[...new Set(all.map(x=>x.form))];
+  let bits=[];
+  if(statement) bits.push(`<b>${statement.cat.toLowerCase()}</b> leads as the statement, everything else stays quiet around it`);
+  else bits.push('a balanced, tonal mix with no single piece shouting');
+  if(forms.length===1) bits.push(`consistently <b>${forms[0].toLowerCase()}</b>`);
+  else bits.push(`dressed-up/down blend that still reads coherent`);
+  return bits.join(' · ');
+}
+
+function buildOutfits(){
+  const anchor = WARDROBE.find(x=>x.id===anchorId);
+  const looks=[]; const names=['The Mainstay','Off-Duty','After Hours','The Sharp One','Weekend Edit','Quiet Luxury'];
+  for(let i=0;i<4;i++){
+    const used=new Set();
+    const o = buildOne(anchor, used);
+    if(o.pieces.length) looks.push(o);
+  }
+  const seen=new Set(); const uniq=[];
+  looks.forEach(o=>{ const k=o.pieces.map(p=>p.id).sort().join('|'); if(!seen.has(k)){seen.add(k);uniq.push(o);} });
+
+  const wrap=document.getElementById('looks');
+  if(!uniq.length){
+    wrap.innerHTML=`<div class="empty" style="grid-column:1/-1"><div class="big">Not enough to pair yet.</div><p>Add a few more categories (a bottom, some shoes) and try again.</p></div>`;
+    return;
+  }
+  wrap.innerHTML='';
+  uniq.forEach((o,i)=>{
+    const all=[{...o.anchor,_role:'Anchor'},...o.pieces.map(p=>({...p,_role:p.cat}))];
+    const pcs=all.slice(0,4).map(p=>`<div class="pc"><img src="${p.src}"><span class="role">${p._role}</span></div>`).join('');
+    const score=Math.min(99,72+o.pieces.length*5+(o.complete?6:0));
+    const el=document.createElement('div'); el.className='look'; el.style.animationDelay=(i*.06)+'s';
+    el.innerHTML=`
+      <div class="lh"><span class="nm">${names[i]||'Look '+(i+1)}</span><span class="sc"><b>${score}</b> match</span></div>
+      <div class="pieces">${pcs}</div>
+      <div class="why">${rationale(o)}.</div>`;
+    wrap.appendChild(el);
+  });
+  wrap.firstChild?.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+/* ============================================================
+   NAV
+   ============================================================ */
+document.querySelectorAll('.nav button').forEach(b=>{
+  b.onclick=()=>{
+    document.querySelectorAll('.nav button').forEach(x=>x.classList.remove('on'));
+    b.classList.add('on');
+    if(b.dataset.p==='studio') renderStudio();
+    document.getElementById('p-'+b.dataset.p).scrollIntoView({behavior:'smooth',block:'start'});
+  };
+});
+const sections = [
+  {id:'p-wardrobe', btn:document.querySelector('.nav button[data-p="wardrobe"]')},
+  {id:'p-studio', btn:document.querySelector('.nav button[data-p="studio"]')},
+];
+window.addEventListener('scroll',()=>{
+  const y = window.scrollY + 200;
+  let active = sections[0];
+  for(const s of sections){
+    const el = document.getElementById(s.id);
+    if(el.offsetTop <= y) active = s;
+  }
+  document.querySelectorAll('.nav button').forEach(x=>x.classList.remove('on'));
+  active.btn.classList.add('on');
+});
+
+/* boot */
+renderCloset(); renderStudio();
+</script>
+</body>
+</html>
